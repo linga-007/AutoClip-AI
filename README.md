@@ -1,4 +1,4 @@
-# Quick Highlight & Save — Chrome Extension
+# AutoClip-AI — Chrome Extension
 
 ## Install (developer mode)
 1. Open `chrome://extensions`.

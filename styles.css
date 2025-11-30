@@ -1,0 +1,8 @@
+/* styles.css - minimal */
+body { font-family: system-ui, Arial; margin: 18px; color: #111; }
+.container { max-width: 720px; }
+input[type="text"], input[type="password"] { width: 100%; padding: 8px; margin: 6px 0 12px; }
+label { display:block; margin-top: 8px; font-weight:600; }
+.row { margin-top: 12px; }
+button { padding: 8px 12px; margin-right: 8px; }
+.help { margin-top: 18px; background: #f7f7f7; padding: 10px; border-radius: 6px; }
