@@ -1,43 +1,131 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Quick Highlight & Save — Options</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AutoClip — Settings</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Quick Highlight & Save — Settings</h1>
+  <div class="app">
+    <header class="header">
+      <div class="header-content">
+        <h1 class="app-title">
+          <span class="app-icon">📎</span>
+          AutoClip
+        </h1>
+        <p class="app-subtitle">Quick Highlight & Save to Notion</p>
+      </div>
+    </header>
 
-    <label>Notion Integration Token (secret)</label>
-    <input id="notionToken" type="password" placeholder="Secret token (starts with secret_...)" />
+    <main class="main">
+      <div class="container">
+        <!-- Status Messages -->
+        <div id="status" class="status-message" style="display: none;"></div>
 
-    <label>Notion Parent Page ID or Database ID</label>
-    <input id="notionParentId" type="text" placeholder="Page ID or Database ID" />
-    <label><input id="notionParentIsDatabase" type="checkbox" /> Parent is a database (tick if database)</label>
+        <!-- Notion Integration Section -->
+        <section class="settings-section">
+          <div class="section-header">
+            <h2 class="section-title">
+              <span class="section-icon">📄</span>
+              Notion Integration
+            </h2>
+            <p class="section-description">Configure your Notion workspace connection</p>
+          </div>
 
-    <label>OpenAI API Key (optional — used for auto-summary)</label>
-    <input id="openaiKey" type="password" placeholder="sk-..." />
+          <div class="form-group">
+            <label for="notionToken" class="form-label">
+              Integration Token
+              <span class="required">*</span>
+            </label>
+            <div class="input-wrapper">
+              <input
+                id="notionToken"
+                type="password"
+                class="form-input"
+                placeholder="Secret token (starts with secret_...)"
+                autocomplete="off"
+              />
+              <div class="input-hint">Create an integration at <a href="https://www.notion.so/my-integrations" target="_blank" class="link">notion.so/my-integrations</a></div>
+            </div>
+          </div>
 
-    <label>Default tags (comma separated)</label>
-    <input id="defaultTags" type="text" placeholder="programming,algorithms" />
+          <div class="form-group">
+            <label for="notionParentId" class="form-label">
+              Parent Page/Database ID
+              <span class="required">*</span>
+            </label>
+            <div class="input-wrapper">
+              <input
+                id="notionParentId"
+                type="text"
+                class="form-input"
+                placeholder="Page ID or Database ID"
+                autocomplete="off"
+              />
+              <div class="input-hint">Copy from your Notion page URL or database URL</div>
+            </div>
+          </div>
 
-    <label><input id="premiumEnabled" type="checkbox" /> Premium features enabled</label>
+          <div class="form-group">
+            <div class="checkbox-wrapper">
+              <input id="notionParentIsDatabase" type="checkbox" class="checkbox-input" />
+              <label for="notionParentIsDatabase" class="checkbox-label">
+                This is a database (not a page)
+              </label>
+            </div>
+          </div>
+        </section>
 
-    <div class="row">
-      <button id="saveBtn">Save</button>
-      <button id="clearBtn">Clear</button>
-    </div>
+        <!-- Action Buttons -->
+        <div class="actions-section">
+          <div class="button-group">
+            <button id="saveBtn" class="btn btn-primary">
+              <span class="btn-icon">💾</span>
+              Save Settings
+            </button>
+            <button id="clearBtn" class="btn btn-secondary">
+              <span class="btn-icon">🗑️</span>
+              Clear All
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
 
-    <section class="help">
-      <h2>Quick setup</h2>
-      <ol>
-        <li>Create a Notion integration & copy the <strong>integration token</strong>. Invite it to your page or database.</li>
-        <li>Paste the destination page ID or database ID above.</li>
-        <li>Optionally paste your OpenAI key for better summaries.</li>
-        <li>Right-click selected text on any page → "Save to Notion".</li>
-      </ol>
-    </section>
+    <!-- Quick Setup Guide -->
+    <aside class="sidebar">
+      <div class="help-card">
+        <h3 class="help-title">🚀 Quick Setup</h3>
+        <ol class="help-steps">
+          <li class="help-step">
+            <span class="step-number">1</span>
+            <div class="step-content">
+              <strong>Create Notion Integration</strong><br>
+              Visit <a href="https://www.notion.so/my-integrations" target="_blank" class="link">notion.so/my-integrations</a> and create a new integration. Copy the secret token.
+            </div>
+          </li>
+          <li class="help-step">
+            <span class="step-number">2</span>
+            <div class="step-content">
+              <strong>Configure Integration</strong><br>
+              Share your target page or database with the integration. Copy the page/database ID from the URL.
+            </div>
+          </li>
+          <li class="help-step">
+            <span class="step-number">3</span>
+            <div class="step-content">
+              <strong>Start Clipping</strong><br>
+              Right-click any selected text → "Save to Notion" to create your first clip!
+            </div>
+          </li>
+        </ol>
+
+        <div class="help-note">
+          <strong>💡 Tip:</strong> You can test your setup by selecting text on any webpage and using the context menu.
+        </div>
+      </div>
+    </aside>
   </div>
 
   <script src="options.js"></script>

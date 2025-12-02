@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Quick Highlight & Save",
-  "description": "Right-click a selection and save it to Notion (auto-formats with URL, timestamp, tags, and AI summary).",
+  "name": "AutoClip AI",
+  "description": "Right-click a selection and save it to Notion (auto-formats with URL, timestamp, and tags).",
   "version": "1.0.0",
   "permissions": [
     "contextMenus",
@@ -12,8 +12,7 @@
     "clipboardWrite"
   ],
   "host_permissions": [
-    "https://api.notion.com/*",
-    "https://api.openai.com/*"
+    "https://api.notion.com/*"
   ],
   "background": {
     "service_worker": "background.js"

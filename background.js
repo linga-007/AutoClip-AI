@@ -70,30 +70,56 @@ function normalizeNotionId(raw) {
   return raw;
 }
 
-// Create children blocks: only the selected text as a single paragraph block
+// Create children blocks: selected text split by lines, each line as a separate paragraph block
 function makeNotionChildrenBlocks({ selection }) {
   const children = [];
   const textContent = selection || "";
-  children.push({
-    object: "block",
-    type: "paragraph",
-    paragraph: {
-      rich_text: [
-        { type: "text", text: { content: textContent } }
-      ]
-    }
+
+  // Split text by newlines and create separate paragraph blocks for each line
+  const lines = textContent.split('\n').filter(line => line.trim().length > 0);
+
+  lines.forEach(line => {
+    children.push({
+      object: "block",
+      type: "paragraph",
+      paragraph: {
+        rich_text: [
+          { type: "text", text: { content: line.trim() } }
+        ]
+      }
+    });
   });
+
+  // If no non-empty lines, add an empty paragraph to avoid empty content
+  if (children.length === 0) {
+    children.push({
+      object: "block",
+      type: "paragraph",
+      paragraph: {
+        rich_text: [
+          { type: "text", text: { content: "" } }
+        ]
+      }
+    });
+  }
+
   return children;
 }
 
-// Create a Notion page (or database entry). Minimal: title (first 40 chars) + body with selected text.
+// Create a Notion entry:
+// - If parent is a DATABASE  -> create a new page in the database (required by Notion)
+// - If parent is a PAGE      -> append blocks directly to that page (no extra sub-page)
 async function createNotionPage(notionToken, parentId, isDatabase, selection) {
-  const endpoint = "https://api.notion.com/v1/pages";
-  const titleValue = selection && selection.length ? (selection.length > 40 ? selection.slice(0,40) + "..." : selection) : "Saved Highlight";
+  let endpoint;
+  let method = "POST";
   let body;
 
   if (isDatabase) {
     // Minimal database write: use `Name` title property. If your DB requires other props, you must add them.
+    const timestamp = new Date().toLocaleString();
+    const titleValue = `Highlight - ${timestamp}`;
+
+    endpoint = "https://api.notion.com/v1/pages";
     body = {
       parent: { database_id: parentId },
       properties: {
@@ -104,17 +130,16 @@ async function createNotionPage(notionToken, parentId, isDatabase, selection) {
       children: makeNotionChildrenBlocks({ selection })
     };
   } else {
+    // Parent is a normal page: just append the text blocks directly to it
+    endpoint = `https://api.notion.com/v1/blocks/${parentId}/children`;
+    method = "PATCH";
     body = {
-      parent: { page_id: parentId },
-      properties: {
-        title: [{ text: { content: titleValue } }]
-      },
       children: makeNotionChildrenBlocks({ selection })
     };
   }
 
   const resp = await fetch(endpoint, {
-    method: "POST",
+    method,
     headers: {
       "Authorization": `Bearer ${notionToken}`,
       "Notion-Version": "2022-06-28",
